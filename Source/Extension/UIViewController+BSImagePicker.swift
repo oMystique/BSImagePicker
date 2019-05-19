@@ -61,4 +61,28 @@ public extension UIViewController {
             self.present(imagePicker, animated: animated, completion: completion)
         }
     }
+    
+    @objc func bs_authorizeImagePickerController(_ imagePicker: BSImagePickerViewController, select: ((_ asset: PHAsset) -> Void)?, deselect: ((_ asset: PHAsset) -> Void)?, cancel: (([PHAsset]) -> Void)?, finish: (([PHAsset]) -> Void)?, completion: (() -> Void)?, failure: (() -> Void)?, authCompletion: (() -> Void)?, selectLimitReached: ((Int) -> Void)? = nil) {
+        BSImagePickerViewController.authorize(fromViewController: self) { (authorized) -> Void in
+            // Make sure we are authorized before proceding
+            guard authorized == true else {
+                if (failure != nil) {
+                    failure!()
+                }
+                return
+            }
+            
+            // Set blocks
+            imagePicker.photosViewController.selectionClosure = select
+            imagePicker.photosViewController.deselectionClosure = deselect
+            imagePicker.photosViewController.cancelClosure = cancel
+            imagePicker.photosViewController.finishClosure = finish
+            imagePicker.photosViewController.selectLimitReachedClosure = selectLimitReached
+            
+            // Present
+            if (authCompletion != nil) {
+                authCompletion!();
+            }
+        }
+    }
 }
