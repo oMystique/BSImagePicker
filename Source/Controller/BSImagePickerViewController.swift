@@ -61,7 +61,6 @@ open class BSImagePickerViewController : UINavigationController {
         // Albums fetch result
         let albumResult = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
         
-        // Video fetch result
         let videoResult = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumVideos, options: fetchOptions)
         
         return [cameraRollResult, albumResult, videoResult]
@@ -203,7 +202,7 @@ extension BSImagePickerViewController: BSImagePickerSettings {
     /**
      See BSImagePicketSettings for documentation
      */
-    @objc public var selectionTextAttributes: [NSAttributedString.Key: AnyObject] {
+    @objc public var selectionTextAttributes: [NSAttributedStringKey: AnyObject] {
         get {
             return settings.selectionTextAttributes
         }

@@ -24,23 +24,21 @@ import UIKit
 import Photos
 
 /**
- Extension on UIViewController to simply presentation of BSImagePicker
- */
+Extension on UIViewController to simply presentation of BSImagePicker
+*/
 public extension UIViewController {
     /**
-     Present a given image picker with closures, any of the closures can be nil.
-     
-     - parameter imagePicker: a BSImagePickerViewController to present
-     - parameter animated: To animate the presentation or not
-     - parameter select: Closure to call when user selects an asset or nil
-     - parameter deselect: Closure to call when user deselects an asset or nil
-     - parameter cancel: Closure to call when user cancels or nil
-     - parameter finish: Closure to call when user finishes or nil
-     - parameter completion: presentation completed closure or nil
-     - failure
-     - parameter selectLimitReached: Closure to call when user reaches selection limit or nil
-     */
-    @objc func bs_presentImagePickerController(_ imagePicker: BSImagePickerViewController, animated: Bool, select: ((_ asset: PHAsset) -> Void)?, deselect: ((_ asset: PHAsset) -> Void)?, cancel: (([PHAsset]) -> Void)?, finish: (([PHAsset]) -> Void)?, completion: (() -> Void)?, failure: (() -> Void)?, selectLimitReached: ((Int) -> Void)? = nil) {
+        Present a given image picker with closures, any of the closures can be nil.
+    
+        - parameter imagePicker: a BSImagePickerViewController to present
+        - parameter animated: To animate the presentation or not
+        - parameter select: Closure to call when user selects an asset or nil
+        - parameter deselect: Closure to call when user deselects an asset or nil
+        - parameter cancel: Closure to call when user cancels or nil
+        - parameter finish: Closure to call when user finishes or nil
+        - parameter completion: presentation completed closure or nil
+    */
+    @objc func bs_presentImagePickerController(_ imagePicker: BSImagePickerViewController, animated: Bool, select: ((_ asset: PHAsset) -> Void)?, deselect: ((_ asset: PHAsset) -> Void)?, cancel: (([PHAsset]) -> Void)?, finish: (([PHAsset]) -> Void)?, completion: (() -> Void)?, failure: (() -> Void)?) {
         BSImagePickerViewController.authorize(fromViewController: self) { (authorized) -> Void in
             // Make sure we are authorized before proceding
             guard authorized == true else {
@@ -55,34 +53,9 @@ public extension UIViewController {
             imagePicker.photosViewController.deselectionClosure = deselect
             imagePicker.photosViewController.cancelClosure = cancel
             imagePicker.photosViewController.finishClosure = finish
-            imagePicker.photosViewController.selectLimitReachedClosure = selectLimitReached
             
             // Present
             self.present(imagePicker, animated: animated, completion: completion)
-        }
-    }
-    
-    @objc func bs_authorizeImagePickerController(_ imagePicker: BSImagePickerViewController, select: ((_ asset: PHAsset) -> Void)?, deselect: ((_ asset: PHAsset) -> Void)?, cancel: (([PHAsset]) -> Void)?, finish: (([PHAsset]) -> Void)?, completion: (() -> Void)?, failure: (() -> Void)?, authCompletion: (() -> Void)?, selectLimitReached: ((Int) -> Void)? = nil) {
-        BSImagePickerViewController.authorize(fromViewController: self) { (authorized) -> Void in
-            // Make sure we are authorized before proceding
-            guard authorized == true else {
-                if (failure != nil) {
-                    failure!()
-                }
-                return
-            }
-            
-            // Set blocks
-            imagePicker.photosViewController.selectionClosure = select
-            imagePicker.photosViewController.deselectionClosure = deselect
-            imagePicker.photosViewController.cancelClosure = cancel
-            imagePicker.photosViewController.finishClosure = finish
-            imagePicker.photosViewController.selectLimitReachedClosure = selectLimitReached
-            
-            // Present
-            if (authCompletion != nil) {
-                authCompletion!();
-            }
         }
     }
 }

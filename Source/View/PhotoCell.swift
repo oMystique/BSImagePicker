@@ -31,7 +31,27 @@ final class PhotoCell: UICollectionViewCell {
     @IBOutlet weak var selectionOverlayView: UIView!
     @IBOutlet weak var selectionView: SelectionView!
     
-    @objc weak var asset: PHAsset?
+    @IBOutlet weak var videoView: UIView!
+    @IBOutlet weak var videoLengthLabel: UILabel!
+    var videoGradient: CAGradientLayer!
+    
+    private lazy var dateFormatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.zeroFormattingBehavior = .pad
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .positional
+        return formatter
+    }()
+    
+    weak var asset: PHAsset? {
+        didSet {
+            if let asset = asset {
+                self.videoView.isHidden = asset.mediaType != .video
+                self.videoLengthLabel.text = dateFormatter.string(from: asset.duration)
+            }
+        }
+    }
+    
     var settings: BSImagePickerSettings {
         get {
             return selectionView.settings
@@ -53,7 +73,6 @@ final class PhotoCell: UICollectionViewCell {
     
     @objc var photoSelected: Bool = false {
         didSet {
-            self.updateAccessibilityLabel(photoSelected)
             let hasChanged = photoSelected != oldValue
             if UIView.areAnimationsEnabled && hasChanged {
                 UIView.animate(withDuration: TimeInterval(0.1), animations: { () -> Void in
@@ -74,10 +93,6 @@ final class PhotoCell: UICollectionViewCell {
         }
     }
     
-    func updateAccessibilityLabel(_ selected: Bool) {
-        self.accessibilityLabel = selected ? "deselect image" : "select image"
-    }
-    
     fileprivate func updateAlpha(_ selected: Bool) {
         if selected == true {
             self.selectionView.alpha = 1.0
@@ -86,5 +101,19 @@ final class PhotoCell: UICollectionViewCell {
             self.selectionView.alpha = 0.0
             self.selectionOverlayView.alpha = 0.0
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        videoGradient.frame = videoView.bounds
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        videoGradient = CAGradientLayer()
+        videoGradient.frame = videoView.bounds
+        videoGradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        videoView.layer.insertSublayer(videoGradient, at: 0)
     }
 }

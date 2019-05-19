@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 import UIKit
+import AVKit
 import Photos
 import BSGridCollectionViewLayout
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -49,7 +50,6 @@ final class PhotosViewController : UICollectionViewController {
     @objc var deselectionClosure: ((_ asset: PHAsset) -> Void)?
     @objc var cancelClosure: ((_ assets: [PHAsset]) -> Void)?
     @objc var finishClosure: ((_ assets: [PHAsset]) -> Void)?
-    @objc var selectLimitReachedClosure: ((_ selectionLimit: Int) -> Void)?
     
     @objc var doneBarButton: UIBarButtonItem?
     @objc var cancelBarButton: UIBarButtonItem?
@@ -190,16 +190,26 @@ final class PhotosViewController : UICollectionViewController {
     }
     
     @objc func collectionViewLongPressed(_ sender: UIGestureRecognizer) {
+        
+        let location = sender.location(in: collectionView)
+        guard let indexPath = collectionView?.indexPathForItem(at: location) else { return }
+        
         if sender.state == .began {
             // Disable recognizer while we are figuring out location and pushing preview
             sender.isEnabled = false
             collectionView?.isUserInteractionEnabled = false
             
-            // Calculate which index path long press came from
-            let location = sender.location(in: collectionView)
-            let indexPath = collectionView?.indexPathForItem(at: location)
-            
-            if let vc = previewViewContoller, let indexPath = indexPath, let cell = collectionView?.cellForItem(at: indexPath) as? PhotoCell, let asset = cell.asset {
+            if let asset = photosDataSource?.fetchResult[indexPath.row], asset.mediaType == .video {
+                let options: PHVideoRequestOptions = PHVideoRequestOptions()
+                options.version = .original
+                PHCachingImageManager.default().requestAVAsset(forVideo: asset, options: options, resultHandler: { (avAsset, audioMix, info) in
+                    if let urlAsset = avAsset as? AVURLAsset {
+                        let localVideoUrl:URL = urlAsset.url
+                        self.playVideoURL(videoURL: localVideoUrl)
+                    }
+                })
+            }
+            else if let vc = previewViewContoller, let cell = collectionView?.cellForItem(at: indexPath) as? PhotoCell, let asset = cell.asset {
                 // Setup fetch options to be synchronous
                 let options = PHImageRequestOptions()
                 options.isSynchronous = true
@@ -243,7 +253,7 @@ final class PhotosViewController : UICollectionViewController {
 
         navigationItem.rightBarButtonItem = doneBarButton
     }
-
+    
     @objc func updateAlbumTitle(_ album: PHAssetCollection) {
         guard let title = album.localizedTitle else { return }
         // Update album title
@@ -313,7 +323,7 @@ extension PhotosViewController {
             updateDoneButton()
 
             // Get indexPaths of selected items
-            let selectedIndexPaths = photosDataSource.selections.compactMap({ (asset) -> IndexPath? in
+            let selectedIndexPaths = photosDataSource.selections.flatMap({ (asset) -> IndexPath? in
                 let index = photosDataSource.fetchResult.index(of: asset)
                 guard index != NSNotFound else { return nil }
                 return IndexPath(item: index, section: 1)
@@ -354,11 +364,6 @@ extension PhotosViewController {
                     closure(asset)
                 }
             }
-        } else if photosDataSource.selections.count >= settings.maxNumberOfSelections,
-            let closure = selectLimitReachedClosure {
-            DispatchQueue.global().async {
-                closure(self.settings.maxNumberOfSelections)
-            }
         }
 
         return false
@@ -385,7 +390,7 @@ extension PhotosViewController: UIPopoverPresentationControllerDelegate {
 }
 // MARK: UINavigationControllerDelegate
 extension PhotosViewController: UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if operation == .push {
             return expandAnimator
         } else {
@@ -429,11 +434,8 @@ extension PhotosViewController {
 
 // MARK: UIImagePickerControllerDelegate
 extension PhotosViewController: UIImagePickerControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-// Local variable inserted by Swift 4.2 migrator.
-let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
-
-        guard let image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             picker.dismiss(animated: true, completion: nil)
             return
         }
@@ -485,19 +487,13 @@ extension PhotosViewController: PHPhotoLibraryChangeObserver {
                     // Update fetch result
                     photosDataSource.fetchResult = photosChanges.fetchResultAfterChanges as! PHFetchResult<PHAsset>
                     
-                    collectionView.performBatchUpdates({
-                        if let removed = photosChanges.removedIndexes {
-                            collectionView.deleteItems(at: removed.bs_indexPathsForSection(1))
-                        }
-                        
-                        if let inserted = photosChanges.insertedIndexes {
-                            collectionView.insertItems(at: inserted.bs_indexPathsForSection(1))
-                        }
-                        
-                        if let changed = photosChanges.changedIndexes {
-                            collectionView.reloadItems(at: changed.bs_indexPathsForSection(1))
-                        }
-                    })
+                    if let removed = photosChanges.removedIndexes {
+                        collectionView.deleteItems(at: removed.bs_indexPathsForSection(1))
+                    }
+                    
+                    if let inserted = photosChanges.insertedIndexes {
+                        collectionView.insertItems(at: inserted.bs_indexPathsForSection(1))
+                    }
                     
                     // Changes is causing issues right now...fix me later
                     // Example of issue:
@@ -510,6 +506,9 @@ extension PhotosViewController: PHPhotoLibraryChangeObserver {
                     //                        print("changed")
                     //                        collectionView.reloadItemsAtIndexPaths(changed.bs_indexPathsForSection(1))
                     //                    }
+                    
+                    // Reload view
+                    collectionView.reloadData()
                 } else if photosChanges.hasIncrementalChanges == false {
                     // Update fetch result
                     photosDataSource.fetchResult = photosChanges.fetchResultAfterChanges as! PHFetchResult<PHAsset>
@@ -525,12 +524,15 @@ extension PhotosViewController: PHPhotoLibraryChangeObserver {
     }
 }
 
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
-	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
-	return input.rawValue
+extension PhotosViewController {
+    func playVideoURL(videoURL: URL) {
+        OperationQueue.main.addOperation {
+            let player = AVPlayer(url: videoURL)
+            let controller = AVPlayerViewController()
+            controller.player = player
+            self.present(controller, animated: true) { () -> Void in
+                player.play()
+            }
+        }
+    }
 }
