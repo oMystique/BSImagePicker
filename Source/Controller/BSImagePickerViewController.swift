@@ -61,7 +61,10 @@ open class BSImagePickerViewController : UINavigationController {
         // Albums fetch result
         let albumResult = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
         
-        return [cameraRollResult, albumResult]
+        // Video fetch result
+        let videoResult = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumVideos, options: fetchOptions)
+        
+        return [cameraRollResult, albumResult, videoResult]
     }()
     
     @objc var albumTitleView: UIButton = {
