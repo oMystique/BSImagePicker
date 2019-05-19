@@ -437,18 +437,21 @@ extension PhotosViewController {
 // MARK: UIImagePickerControllerDelegate
 extension PhotosViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        // Local variable inserted by Swift 4.2 migrator.
+        
         let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         
-        guard let image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else {
-            picker.dismiss(animated: true, completion: nil)
-            return
-        }
+        let mediaType = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaType)] as! String
         
-        var placeholder: PHObjectPlaceholder?
-        PHPhotoLibrary.shared().performChanges({
-            let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
-            placeholder = request.placeholderForCreatedAsset
+        if mediaType == kUTTypeImage as String {
+            guard let image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else {
+                picker.dismiss(animated: true, completion: nil)
+                return
+            }
+            
+            var placeholder: PHObjectPlaceholder?
+            PHPhotoLibrary.shared().performChanges({
+                let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
+                placeholder = request.placeholderForCreatedAsset
             }, completionHandler: { success, error in
                 guard let placeholder = placeholder, let asset = PHAsset.fetchAssets(withLocalIdentifiers: [placeholder.localIdentifier], options: nil).firstObject, success == true else {
                     picker.dismiss(animated: true, completion: nil)
@@ -469,7 +472,46 @@ extension PhotosViewController: UIImagePickerControllerDelegate {
                     
                     picker.dismiss(animated: true, completion: nil)
                 }
-        })
+            })
+        }
+        else if mediaType == kUTTypeMovie as String {
+            let videoUrl = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaURL)] as! URL
+            asyncFetchLatestVideoFromMediaFolder(videoUrl, picker: picker)
+        }
+    }
+    
+    private func asyncFetchLatestVideoFromMediaFolder(_ videoUrl: URL, picker: UIImagePickerController) {
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: videoUrl)
+        }) { saved, error in
+            guard saved, error == nil else {
+                return
+            }
+            
+            let fetchOptions = PHFetchOptions()
+            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+            
+            guard let asset = PHAsset.fetchAssets(with: .video, options: fetchOptions).firstObject else {
+                picker.dismiss(animated: true, completion: nil)
+                return
+            }
+            
+            
+            DispatchQueue.main.async {
+                // TODO: move to a function. this is duplicated in didSelect
+                self.photosDataSource?.selections.append(asset)
+                self.updateDoneButton()
+                
+                // Call selection closure
+                if let closure = self.selectionClosure {
+                    DispatchQueue.global().async {
+                        closure(asset)
+                    }
+                }
+                
+                picker.dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
