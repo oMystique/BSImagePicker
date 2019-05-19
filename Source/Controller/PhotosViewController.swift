@@ -23,6 +23,7 @@
 import UIKit
 import AVKit
 import Photos
+import MobileCoreServices
 import BSGridCollectionViewLayout
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
@@ -227,7 +228,7 @@ final class PhotosViewController : UICollectionViewController {
                 shrinkAnimator.sourceImageView = vc.imageView
                 shrinkAnimator.destinationImageView = cell.imageView
                 
-                navigationController?.pushViewController(vc, animated: true)
+                self.parent?.present(vc, animated: true, completion: nil)
             }
             
             // Re-enable recognizer, after animation is done
@@ -300,6 +301,7 @@ extension PhotosViewController {
             let cameraController = UIImagePickerController()
             cameraController.allowsEditing = false
             cameraController.sourceType = .camera
+            cameraController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
             cameraController.delegate = self
             
             self.present(cameraController, animated: true, completion: nil)
