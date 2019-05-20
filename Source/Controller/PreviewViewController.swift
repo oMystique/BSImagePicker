@@ -25,6 +25,7 @@ import UIKit
 final class PreviewViewController : UIViewController {
     @objc var imageView: UIImageView?
     fileprivate var fullscreen = false
+    private var initialTouchPoint = CGPoint(x: 0, y: 0)
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -40,6 +41,13 @@ final class PreviewViewController : UIViewController {
         tapRecognizer.numberOfTapsRequired = 1
         tapRecognizer.addTarget(self, action: #selector(PreviewViewController.toggleFullscreen))
         view.addGestureRecognizer(tapRecognizer)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action:(#selector(self.panGestureRecognizerHandler(_:))))
+        self.view.addGestureRecognizer(panGesture)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -73,7 +81,7 @@ final class PreviewViewController : UIViewController {
         if self.fullscreen {
             aColor = UIColor.black
         } else {
-            aColor = UIColor.white
+            aColor = UIColor.white.withAlphaComponent(0.6)
         }
         
         self.view.backgroundColor = aColor
@@ -81,5 +89,25 @@ final class PreviewViewController : UIViewController {
     
     override var prefersStatusBarHidden : Bool {
         return fullscreen
+    }
+    
+    @IBAction func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
+        let touchPoint = sender.location(in: self.view?.window)
+        
+        if sender.state == .began {
+            initialTouchPoint = touchPoint
+        } else if sender.state == .changed {
+            if touchPoint.y - initialTouchPoint.y > 0 {
+                self.view.frame = CGRect(x: 0, y: touchPoint.y - initialTouchPoint.y, width: self.view.frame.size.width, height: self.view.frame.size.height)
+            }
+        } else if sender.state == .ended || sender.state == .cancelled {
+            if touchPoint.y - initialTouchPoint.y > 100 {
+                self.dismiss(animated: true, completion: nil)
+            } else {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+                })
+            }
+        }
     }
 }

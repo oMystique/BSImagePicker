@@ -228,6 +228,9 @@ final class PhotosViewController : UICollectionViewController {
                 shrinkAnimator.sourceImageView = vc.imageView
                 shrinkAnimator.destinationImageView = cell.imageView
                 
+                vc.modalPresentationCapturesStatusBarAppearance = true
+                vc.modalPresentationStyle = .overFullScreen
+                
                 self.parent?.present(vc, animated: true, completion: nil)
             }
             

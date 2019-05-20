@@ -39,7 +39,7 @@ class ViewController: UIViewController {
                 print("Cancel: \(assets)")
             }, finish: { (assets: [PHAsset]) -> Void in
                 print("Finish: \(assets)")
-            }, completion: nil)
+        }, completion: nil, failure: nil)
     }
     
     @IBAction func showCustomImagePicker(_ sender: UIButton) {
@@ -77,7 +77,7 @@ class ViewController: UIViewController {
                 print("Cancel: \(assets)")
             }, finish: { (assets: [PHAsset]) -> Void in
                 print("Finish: \(assets)")
-            }, completion: nil)
+        }, completion: nil, failure: nil)
     }
   
     @IBAction func showImagePickerWithSelectedAssets(_ sender: UIButton) {
@@ -104,7 +104,7 @@ class ViewController: UIViewController {
             print("Cancel: \(assets)")
           }, finish: { (assets: [PHAsset]) -> Void in
             print("Finish: \(assets)")
-          }, completion: nil)
+        }, completion: nil, failure: nil)
     }
 }
 
