@@ -19,7 +19,7 @@ final class CameraCell: UICollectionViewCell {
             imageView.image = takePhotoIcon
             
             // Apply tint to image
-            imageView.image = imageView.image?.withRenderingMode(.alwaysTemplate)
+//            imageView.image = imageView.image?.withRenderingMode(.alwaysTemplate)
         }
     }
     
