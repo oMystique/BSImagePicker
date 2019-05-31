@@ -20,6 +20,12 @@
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eql-VY-cc4">
                         <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tPt-4S-1qg">
                         <rect key="frame" x="0.0" y="80" width="100" height="20"/>
@@ -67,7 +73,7 @@
                 <constraint firstAttribute="trailing" secondItem="vrZ-cc-3iN" secondAttribute="trailing" id="Cpg-dZ-0Lg"/>
                 <constraint firstAttribute="trailing" secondItem="ZWL-2w-R4Y" secondAttribute="trailing" constant="10" id="Mxn-IB-9vl"/>
                 <constraint firstAttribute="bottom" secondItem="vrZ-cc-3iN" secondAttribute="bottom" id="Uh1-N4-v8c"/>
-                <constraint firstAttribute="bottom" secondItem="tPt-4S-1qg" secondAttribute="bottom" id="Ydc-d7-ogC"/>
+                <constraint firstAttribute="bottom" secondItem="tPt-4S-1qg" secondAttribute="bottom" constant="6" id="Ydc-d7-ogC"/>
                 <constraint firstItem="eql-VY-cc4" firstAttribute="top" secondItem="Wnb-Ja-sAy" secondAttribute="top" constant="6" id="bsa-1y-CS3">
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -76,10 +82,10 @@
                     </userDefinedRuntimeAttributes>
                 </constraint>
                 <constraint firstAttribute="trailing" secondItem="eql-VY-cc4" secondAttribute="trailing" constant="6" id="gn3-z2-xcM"/>
-                <constraint firstItem="tPt-4S-1qg" firstAttribute="leading" secondItem="Wnb-Ja-sAy" secondAttribute="leading" id="l3t-tF-qSY"/>
+                <constraint firstItem="tPt-4S-1qg" firstAttribute="leading" secondItem="Wnb-Ja-sAy" secondAttribute="leading" constant="7" id="l3t-tF-qSY"/>
                 <constraint firstAttribute="bottom" secondItem="eql-VY-cc4" secondAttribute="bottom" constant="6" id="lRC-Wc-2F2"/>
                 <constraint firstItem="vrZ-cc-3iN" firstAttribute="top" secondItem="Wnb-Ja-sAy" secondAttribute="top" id="rDa-oL-Q0g"/>
-                <constraint firstAttribute="trailing" secondItem="tPt-4S-1qg" secondAttribute="trailing" id="vZ2-kJ-x2R"/>
+                <constraint firstAttribute="trailing" secondItem="tPt-4S-1qg" secondAttribute="trailing" constant="7" id="vZ2-kJ-x2R"/>
             </constraints>
             <connections>
                 <outlet property="imageView" destination="eql-VY-cc4" id="zoV-fy-Rn2"/>
