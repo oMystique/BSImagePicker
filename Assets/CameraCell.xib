@@ -19,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="40Y-IQ-I2M">
-                        <rect key="frame" x="6" y="6" width="88" height="88"/>
+                        <rect key="frame" x="4" y="4" width="92" height="92"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -29,27 +29,27 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qvQ-jD-B52">
-                        <rect key="frame" x="6" y="6" width="88" height="88"/>
+                        <rect key="frame" x="4" y="4" width="92" height="92"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </imageView>
                 </subviews>
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="40Y-IQ-I2M" secondAttribute="trailing" constant="6" id="0CF-25-fnk"/>
-                <constraint firstItem="40Y-IQ-I2M" firstAttribute="leading" secondItem="dx2-jd-nta" secondAttribute="leading" constant="6" id="Le4-AF-WLH"/>
-                <constraint firstAttribute="trailing" secondItem="qvQ-jD-B52" secondAttribute="trailing" constant="6" id="bMH-5D-RYe"/>
-                <constraint firstItem="qvQ-jD-B52" firstAttribute="top" secondItem="dx2-jd-nta" secondAttribute="top" constant="6" id="bwE-TQ-qO6"/>
-                <constraint firstAttribute="bottom" secondItem="qvQ-jD-B52" secondAttribute="bottom" constant="6" id="m9b-Ob-DYN"/>
-                <constraint firstItem="qvQ-jD-B52" firstAttribute="leading" secondItem="dx2-jd-nta" secondAttribute="leading" constant="6" id="vec-jV-qy2"/>
-                <constraint firstItem="40Y-IQ-I2M" firstAttribute="top" secondItem="dx2-jd-nta" secondAttribute="top" constant="6" id="vt7-P8-Z2b">
+                <constraint firstAttribute="trailing" secondItem="40Y-IQ-I2M" secondAttribute="trailing" constant="4" id="0CF-25-fnk"/>
+                <constraint firstItem="40Y-IQ-I2M" firstAttribute="leading" secondItem="dx2-jd-nta" secondAttribute="leading" constant="4" id="Le4-AF-WLH"/>
+                <constraint firstAttribute="trailing" secondItem="qvQ-jD-B52" secondAttribute="trailing" constant="4" id="bMH-5D-RYe"/>
+                <constraint firstItem="qvQ-jD-B52" firstAttribute="top" secondItem="dx2-jd-nta" secondAttribute="top" constant="4" id="bwE-TQ-qO6"/>
+                <constraint firstAttribute="bottom" secondItem="qvQ-jD-B52" secondAttribute="bottom" constant="4" id="m9b-Ob-DYN"/>
+                <constraint firstItem="qvQ-jD-B52" firstAttribute="leading" secondItem="dx2-jd-nta" secondAttribute="leading" constant="4" id="vec-jV-qy2"/>
+                <constraint firstItem="40Y-IQ-I2M" firstAttribute="top" secondItem="dx2-jd-nta" secondAttribute="top" constant="4" id="vt7-P8-Z2b">
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="10"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </constraint>
-                <constraint firstAttribute="bottom" secondItem="40Y-IQ-I2M" secondAttribute="bottom" constant="6" id="wug-sP-OLR"/>
+                <constraint firstAttribute="bottom" secondItem="40Y-IQ-I2M" secondAttribute="bottom" constant="4" id="wug-sP-OLR"/>
             </constraints>
             <connections>
                 <outlet property="cameraBackground" destination="40Y-IQ-I2M" id="K5o-kD-cfg"/>

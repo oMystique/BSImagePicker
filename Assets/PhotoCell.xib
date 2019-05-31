@@ -18,39 +18,54 @@
                 <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eql-VY-cc4">
-                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Srv-IU-3bz">
+                        <rect key="frame" x="-70" y="-14" width="240" height="128"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eql-VY-cc4">
+                                <rect key="frame" x="70" y="14" width="100" height="100"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tPt-4S-1qg">
+                                <rect key="frame" x="70" y="54" width="100" height="20"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video.png" translatesAutoresizingMaskIntoConstraints="NO" id="fdB-hh-AK5">
+                                        <rect key="frame" x="0.0" y="0.0" width="30" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="seD-VS-O23"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KV4-gt-I91">
+                                        <rect key="frame" x="72.5" y="3.5" width="24.5" height="13.5"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="KV4-gt-I91" secondAttribute="trailing" constant="3" id="CYv-7K-nK3"/>
+                                    <constraint firstItem="fdB-hh-AK5" firstAttribute="leading" secondItem="tPt-4S-1qg" secondAttribute="leading" id="G5U-OA-NVy"/>
+                                    <constraint firstAttribute="height" constant="20" id="I4e-dR-ZU3"/>
+                                    <constraint firstItem="KV4-gt-I91" firstAttribute="centerY" secondItem="tPt-4S-1qg" secondAttribute="centerY" id="OJo-QT-gR0"/>
+                                    <constraint firstItem="fdB-hh-AK5" firstAttribute="top" secondItem="tPt-4S-1qg" secondAttribute="top" id="YKg-w9-5ho"/>
+                                    <constraint firstAttribute="bottom" secondItem="fdB-hh-AK5" secondAttribute="bottom" id="pAo-PE-a8n"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="eql-VY-cc4" secondAttribute="bottom" id="8hF-Ho-MgT"/>
+                            <constraint firstItem="eql-VY-cc4" firstAttribute="top" secondItem="Srv-IU-3bz" secondAttribute="top" id="DsH-YD-WVJ"/>
+                            <constraint firstAttribute="bottom" secondItem="tPt-4S-1qg" secondAttribute="bottom" id="Ojs-aZ-RgB"/>
+                            <constraint firstAttribute="trailing" secondItem="tPt-4S-1qg" secondAttribute="trailing" id="Pul-L6-Ajx"/>
+                            <constraint firstItem="tPt-4S-1qg" firstAttribute="leading" secondItem="Srv-IU-3bz" secondAttribute="leading" id="dYv-u6-Jq5"/>
+                            <constraint firstAttribute="trailing" secondItem="eql-VY-cc4" secondAttribute="trailing" id="mkf-dN-6nN"/>
+                            <constraint firstItem="eql-VY-cc4" firstAttribute="leading" secondItem="Srv-IU-3bz" secondAttribute="leading" id="rvI-tT-jpd"/>
+                        </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                 <integer key="value" value="10"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                         </userDefinedRuntimeAttributes>
-                    </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tPt-4S-1qg">
-                        <rect key="frame" x="0.0" y="80" width="100" height="20"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video.png" translatesAutoresizingMaskIntoConstraints="NO" id="fdB-hh-AK5">
-                                <rect key="frame" x="0.0" y="0.0" width="30" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="seD-VS-O23"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KV4-gt-I91">
-                                <rect key="frame" x="72.5" y="3.5" width="24.5" height="13.5"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="KV4-gt-I91" secondAttribute="trailing" constant="3" id="CYv-7K-nK3"/>
-                            <constraint firstItem="fdB-hh-AK5" firstAttribute="leading" secondItem="tPt-4S-1qg" secondAttribute="leading" id="G5U-OA-NVy"/>
-                            <constraint firstAttribute="height" constant="20" id="I4e-dR-ZU3"/>
-                            <constraint firstItem="KV4-gt-I91" firstAttribute="centerY" secondItem="tPt-4S-1qg" secondAttribute="centerY" id="OJo-QT-gR0"/>
-                            <constraint firstItem="fdB-hh-AK5" firstAttribute="top" secondItem="tPt-4S-1qg" secondAttribute="top" id="YKg-w9-5ho"/>
-                            <constraint firstAttribute="bottom" secondItem="fdB-hh-AK5" secondAttribute="bottom" id="pAo-PE-a8n"/>
-                        </constraints>
                     </view>
                     <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vrZ-cc-3iN">
                         <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
@@ -68,24 +83,15 @@
             </view>
             <constraints>
                 <constraint firstItem="vrZ-cc-3iN" firstAttribute="leading" secondItem="Wnb-Ja-sAy" secondAttribute="leading" id="1k6-ja-XtL"/>
-                <constraint firstItem="eql-VY-cc4" firstAttribute="leading" secondItem="Wnb-Ja-sAy" secondAttribute="leading" constant="6" id="6Yj-56-Ajf"/>
+                <constraint firstAttribute="bottom" secondItem="Srv-IU-3bz" secondAttribute="bottom" constant="4" id="68d-Ra-0LP"/>
+                <constraint firstItem="Srv-IU-3bz" firstAttribute="top" secondItem="Wnb-Ja-sAy" secondAttribute="top" constant="4" id="8bs-10-Jw4"/>
                 <constraint firstAttribute="bottom" secondItem="ZWL-2w-R4Y" secondAttribute="bottom" constant="16" id="9kI-gE-Fuo"/>
                 <constraint firstAttribute="trailing" secondItem="vrZ-cc-3iN" secondAttribute="trailing" id="Cpg-dZ-0Lg"/>
+                <constraint firstAttribute="trailing" secondItem="Srv-IU-3bz" secondAttribute="trailing" constant="4" id="GEQ-Ob-41f"/>
                 <constraint firstAttribute="trailing" secondItem="ZWL-2w-R4Y" secondAttribute="trailing" constant="10" id="Mxn-IB-9vl"/>
+                <constraint firstItem="Srv-IU-3bz" firstAttribute="leading" secondItem="Wnb-Ja-sAy" secondAttribute="leading" constant="4" id="UDk-Dw-g16"/>
                 <constraint firstAttribute="bottom" secondItem="vrZ-cc-3iN" secondAttribute="bottom" id="Uh1-N4-v8c"/>
-                <constraint firstAttribute="bottom" secondItem="tPt-4S-1qg" secondAttribute="bottom" constant="6" id="Ydc-d7-ogC"/>
-                <constraint firstItem="eql-VY-cc4" firstAttribute="top" secondItem="Wnb-Ja-sAy" secondAttribute="top" constant="6" id="bsa-1y-CS3">
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="10"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </constraint>
-                <constraint firstAttribute="trailing" secondItem="eql-VY-cc4" secondAttribute="trailing" constant="6" id="gn3-z2-xcM"/>
-                <constraint firstItem="tPt-4S-1qg" firstAttribute="leading" secondItem="Wnb-Ja-sAy" secondAttribute="leading" constant="7" id="l3t-tF-qSY"/>
-                <constraint firstAttribute="bottom" secondItem="eql-VY-cc4" secondAttribute="bottom" constant="6" id="lRC-Wc-2F2"/>
                 <constraint firstItem="vrZ-cc-3iN" firstAttribute="top" secondItem="Wnb-Ja-sAy" secondAttribute="top" id="rDa-oL-Q0g"/>
-                <constraint firstAttribute="trailing" secondItem="tPt-4S-1qg" secondAttribute="trailing" constant="7" id="vZ2-kJ-x2R"/>
             </constraints>
             <connections>
                 <outlet property="imageView" destination="eql-VY-cc4" id="zoV-fy-Rn2"/>
