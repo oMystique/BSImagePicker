@@ -87,6 +87,7 @@ open class BSImagePickerViewController : UINavigationController {
         vc.doneBarButton = self.doneButton
         vc.cancelBarButton = self.cancelButton
         vc.albumTitleView = self.albumTitleView
+        vc.maxFileSizeInBytes = maxFileSizeInBytes
         
         return vc
     }()
