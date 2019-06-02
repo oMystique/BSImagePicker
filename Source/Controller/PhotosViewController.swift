@@ -455,7 +455,7 @@ extension PhotosViewController: UIImagePickerControllerDelegate {
             }
             
             if self.photosTakenClosure != nil, let data = image.pngData() {
-                if maxFileSizeInBytes != 0, (data as NSData).length <= maxFileSizeInBytes {
+                if maxFileSizeInBytes == 0 || (maxFileSizeInBytes != 0 && (data as NSData).length <= maxFileSizeInBytes) {
                     photosTakenClosure!(data, "captured_photo.png")
                     picker.dismiss(animated: true, completion: nil)
                     return
@@ -493,7 +493,7 @@ extension PhotosViewController: UIImagePickerControllerDelegate {
             if (self.photosTakenClosure != nil) {
                 do {
                     let data = try Data(contentsOf: videoUrl)
-                    if maxFileSizeInBytes != 0, (data as NSData).length <= maxFileSizeInBytes {
+                    if maxFileSizeInBytes == 0 || (maxFileSizeInBytes != 0 && (data as NSData).length <= maxFileSizeInBytes) {
                         let fileExt = (videoUrl.absoluteString as NSString).pathExtension
                         photosTakenClosure!(data, "captured_video." + fileExt)
                         picker.dismiss(animated: true, completion: nil)
