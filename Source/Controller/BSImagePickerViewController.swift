@@ -48,6 +48,11 @@ open class BSImagePickerViewController : UINavigationController {
      */
     @objc open var defaultSelections: Array<PHAsset>?
     
+    /*
+    Max file size
+    */
+    @objc open var maxFileSizeInBytes: Int = 0
+    
     /**
      Fetch results.
      */

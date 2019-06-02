@@ -57,6 +57,8 @@ final class PhotosViewController : UICollectionViewController {
     @objc var cancelBarButton: UIBarButtonItem?
     @objc var albumTitleView: UIButton?
     
+    @objc var maxFileSizeInBytes: Int = 0
+    
     @objc let expandAnimator = ZoomAnimator()
     @objc let shrinkAnimator = ZoomAnimator()
     
@@ -453,8 +455,11 @@ extension PhotosViewController: UIImagePickerControllerDelegate {
             }
             
             if self.photosTakenClosure != nil, let data = image.pngData() {
-                photosTakenClosure!(data, "photo.png")
-                return
+                if maxFileSizeInBytes != 0, (data as NSData).length <= maxFileSizeInBytes {
+                    photosTakenClosure!(data, "captured_photo.png")
+                    picker.dismiss(animated: true, completion: nil)
+                    return
+                }
             }
             
             var placeholder: PHObjectPlaceholder?
@@ -488,7 +493,14 @@ extension PhotosViewController: UIImagePickerControllerDelegate {
             if (self.photosTakenClosure != nil) {
                 do {
                     let data = try Data(contentsOf: videoUrl)
-                    photosTakenClosure!(data, "video.mp4")
+                    if maxFileSizeInBytes != 0, (data as NSData).length <= maxFileSizeInBytes {
+                        let fileExt = (videoUrl.absoluteString as NSString).pathExtension
+                        photosTakenClosure!(data, "captured_video." + fileExt)
+                        picker.dismiss(animated: true, completion: nil)
+                    }
+                    else {
+                        asyncFetchLatestVideoFromMediaFolder(videoUrl, picker: picker)
+                    }
                 } catch {
                     asyncFetchLatestVideoFromMediaFolder(videoUrl, picker: picker)
                 }
