@@ -29,6 +29,7 @@ class ViewController: UIViewController {
     @IBAction func showImagePicker(_ sender: UIButton) {
         let vc = BSImagePickerViewController()
         vc.maxNumberOfSelections = 6
+        vc.takePhotos = true
         
         bs_presentImagePickerController(vc, animated: true,
             select: { (asset: PHAsset) -> Void in
@@ -46,6 +47,7 @@ class ViewController: UIViewController {
         let vc = BSImagePickerViewController()
         vc.maxNumberOfSelections = 6
         vc.takePhotoIcon = UIImage(named: "chat")
+        vc.takePhotos = true
         
         vc.albumButton.tintColor = UIColor.green
         vc.cancelButton.tintColor = UIColor.red
@@ -94,7 +96,8 @@ class ViewController: UIViewController {
       
         let vc = BSImagePickerViewController()
 //        vc.defaultSelections = evenAssets
-      
+        vc.takePhotos = true
+        
         bs_presentImagePickerController(vc, animated: true,
           select: { (asset: PHAsset) -> Void in
             print("Selected: \(asset)")

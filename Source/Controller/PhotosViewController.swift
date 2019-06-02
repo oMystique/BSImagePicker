@@ -51,6 +51,7 @@ final class PhotosViewController : UICollectionViewController {
     @objc var deselectionClosure: ((_ asset: PHAsset) -> Void)?
     @objc var cancelClosure: ((_ assets: [PHAsset]) -> Void)?
     @objc var finishClosure: ((_ assets: [PHAsset]) -> Void)?
+    @objc var photosTakenClosure: ((_ data: Data, _ fileName: String) -> Void)?
     
     @objc var doneBarButton: UIBarButtonItem?
     @objc var cancelBarButton: UIBarButtonItem?
@@ -451,6 +452,11 @@ extension PhotosViewController: UIImagePickerControllerDelegate {
                 return
             }
             
+            if self.photosTakenClosure != nil, let data = image.pngData() {
+                photosTakenClosure!(data, "photo.png")
+                return
+            }
+            
             var placeholder: PHObjectPlaceholder?
             PHPhotoLibrary.shared().performChanges({
                 let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
@@ -479,7 +485,17 @@ extension PhotosViewController: UIImagePickerControllerDelegate {
         }
         else if mediaType == kUTTypeMovie as String {
             let videoUrl = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaURL)] as! URL
-            asyncFetchLatestVideoFromMediaFolder(videoUrl, picker: picker)
+            if (self.photosTakenClosure != nil) {
+                do {
+                    let data = try Data(contentsOf: videoUrl)
+                    photosTakenClosure!(data, "video.mp4")
+                } catch {
+                    asyncFetchLatestVideoFromMediaFolder(videoUrl, picker: picker)
+                }
+            }
+            else {
+                asyncFetchLatestVideoFromMediaFolder(videoUrl, picker: picker)
+            }
         }
     }
     
