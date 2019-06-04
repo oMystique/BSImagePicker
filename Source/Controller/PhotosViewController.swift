@@ -454,9 +454,9 @@ extension PhotosViewController: UIImagePickerControllerDelegate {
                 return
             }
             
-            if self.photosTakenClosure != nil, let data = image.pngData() {
+            if self.photosTakenClosure != nil, let data = image.jpegData(compressionQuality: 1) {
                 if maxFileSizeInBytes == 0 || (maxFileSizeInBytes != 0 && (data as NSData).length <= maxFileSizeInBytes) {
-                    photosTakenClosure!(data, "captured_photo.png")
+                    photosTakenClosure!(data, "captured_photo.jpg")
                     picker.dismiss(animated: true, completion: nil)
                     return
                 }
