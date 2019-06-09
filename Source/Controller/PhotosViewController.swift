@@ -52,6 +52,7 @@ final class PhotosViewController : UICollectionViewController {
     @objc var cancelClosure: ((_ assets: [PHAsset]) -> Void)?
     @objc var finishClosure: ((_ assets: [PHAsset]) -> Void)?
     @objc var photosTakenClosure: ((_ data: Data, _ fileName: String) -> Void)?
+    @objc var cameraPermissionDeniedClosure: (() -> Void)?
     
     @objc var doneBarButton: UIBarButtonItem?
     @objc var cancelBarButton: UIBarButtonItem?
@@ -304,6 +305,14 @@ extension PhotosViewController {
 
         // Camera shouldn't be selected, but pop the UIImagePickerController!
         if let composedDataSource = composedDataSource , composedDataSource.dataSources[indexPath.section].isEqual(cameraDataSource) {
+            
+            if AVCaptureDevice.authorizationStatus(for: AVMediaType.video) ==  .denied {
+                if ((cameraPermissionDeniedClosure) != nil) {
+                    cameraPermissionDeniedClosure!()
+                }
+                return false
+            }
+            
             let cameraController = UIImagePickerController()
             cameraController.allowsEditing = false
             cameraController.sourceType = .camera

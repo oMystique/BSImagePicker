@@ -59,7 +59,7 @@ public extension UIViewController {
         }
     }
     
-    @objc func bs_authorizeImagePickerController(_ imagePicker: BSImagePickerViewController, select: ((_ asset: PHAsset) -> Void)?, deselect: ((_ asset: PHAsset) -> Void)?, cancel: (([PHAsset]) -> Void)?, finish: (([PHAsset]) -> Void)?, completion: (() -> Void)?, failure: (() -> Void)?, authCompletion: (() -> Void)?, photosTakenClosure: ((_ data: Data, _ fileName: String) -> Void)?) {
+    @objc func bs_authorizeImagePickerController(_ imagePicker: BSImagePickerViewController, select: ((_ asset: PHAsset) -> Void)?, deselect: ((_ asset: PHAsset) -> Void)?, cancel: (([PHAsset]) -> Void)?, finish: (([PHAsset]) -> Void)?, completion: (() -> Void)?, failure: (() -> Void)?, authCompletion: (() -> Void)?, photosTakenClosure: ((_ data: Data, _ fileName: String) -> Void)?, cameraPermissionDeniedClosure: (() -> Void)?) {
         BSImagePickerViewController.authorize(fromViewController: self) { (authorized) -> Void in
             // Make sure we are authorized before proceding
             guard authorized == true else {
@@ -75,6 +75,7 @@ public extension UIViewController {
             imagePicker.photosViewController.cancelClosure = cancel
             imagePicker.photosViewController.finishClosure = finish
             imagePicker.photosViewController.photosTakenClosure = photosTakenClosure
+            imagePicker.photosViewController.cameraPermissionDeniedClosure = cameraPermissionDeniedClosure
             
             // Auth complete
             if (authCompletion != nil) {
