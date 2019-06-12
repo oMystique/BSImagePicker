@@ -234,7 +234,7 @@ final class PhotosViewController : UICollectionViewController {
                             
                             PHImageManager.default().requestImage(for: asset, targetSize: imageView.frame.size, contentMode: PHImageContentMode.aspectFill, options: options, resultHandler: {
                                 (image, info) in
-                                if (image) {
+                                if (image != nil) {
                                     imageView.image = image
                                 }
                             })
