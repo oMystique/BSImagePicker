@@ -231,6 +231,7 @@ final class PhotosViewController : UICollectionViewController {
                             let options = PHImageRequestOptions()
                             options.deliveryMode = PHImageRequestOptionsDeliveryMode.fastFormat
                             options.isSynchronous = true
+                            options.isNetworkAccessAllowed = true
                             
                             PHImageManager.default().requestImage(for: asset, targetSize: imageView.frame.size, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: {
                                 (image, _) in
