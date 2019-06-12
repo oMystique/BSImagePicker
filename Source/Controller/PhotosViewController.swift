@@ -230,9 +230,8 @@ final class PhotosViewController : UICollectionViewController {
                         }
                         else {
                             let options = PHImageRequestOptions()
-                            options.resizeMode = .none
+                            options.resizeMode = .exact
                             options.version = .current
-                            options.deliveryMode = .highQualityFormat
                             
                             PHImageManager.default().requestImage(for: asset, targetSize: imageView.frame.size, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: {
                                 (image, info) in
