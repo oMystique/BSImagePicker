@@ -144,7 +144,7 @@ final class PhotosViewController : UICollectionViewController {
         photosDataSource?.registerCellIdentifiersForCollectionView(collectionView)
         cameraDataSource.registerCellIdentifiersForCollectionView(collectionView)
         
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
     }
     
     // MARK: Appear/Disappear
