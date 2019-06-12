@@ -234,7 +234,7 @@ final class PhotosViewController : UICollectionViewController {
                             options.isSynchronous = true
                             options.isNetworkAccessAllowed = true
                             
-                            PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 199, height: 199), contentMode: PHImageContentMode.aspectFill, options: options, resultHandler: {
+                            PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 401, height: 401), contentMode: PHImageContentMode.aspectFill, options: options, resultHandler: {
                                 (image, info) in
                                 imageView.image = result
                             })
