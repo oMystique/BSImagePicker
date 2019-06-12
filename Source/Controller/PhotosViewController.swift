@@ -232,7 +232,6 @@ final class PhotosViewController : UICollectionViewController {
                             let options = PHImageRequestOptions()
                             options.resizeMode = .exact
                             options.version = .current
-                            options.isSynchronous = true
                             
                             PHImageManager.default().requestImage(for: asset, targetSize: imageView.frame.size, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: {
                                 (image, info) in
