@@ -219,10 +219,11 @@ final class PhotosViewController : UICollectionViewController {
                 let options = PHImageRequestOptions()
                 options.isSynchronous = true
                 options.isNetworkAccessAllowed = true
+                options.version = .current
                 
                 // Load image for preview
                 if let imageView = vc.imageView {
-                    PHCachingImageManager.default().requestImage(for: asset, targetSize:imageView.frame.size, contentMode: .aspectFit, options: options) { (result, _) in
+                    PHCachingImageManager.default().requestImage(for: asset, targetSize:imageView.frame.size, contentMode: .aspectFit, options: options) { (result, info) in
                         
                         if (result != nil) {
                             imageView.image = result
@@ -230,11 +231,11 @@ final class PhotosViewController : UICollectionViewController {
                         else {
                             let options = PHImageRequestOptions()
                             options.deliveryMode = PHImageRequestOptionsDeliveryMode.fastFormat
-                            options.isSynchronous = true
+                            options.isSynchronous = false
                             options.isNetworkAccessAllowed = true
                             
-                            PHImageManager.default().requestImage(for: asset, targetSize: imageView.frame.size, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: {
-                                (image, _) in
+                            PHImageManager.default().requestImage(for: asset, targetSize: imageView.frame.size, contentMode: PHImageContentMode.aspectFill, options: options, resultHandler: {
+                                (image, info) in
                                 imageView.image = result
                             })
                         }
