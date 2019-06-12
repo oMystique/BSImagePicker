@@ -230,7 +230,6 @@ final class PhotosViewController : UICollectionViewController {
                         }
                         else {
                             let options = PHImageRequestOptions()
-                            options.isSynchronous = true
                             options.resizeMode = .none
                             options.version = .current
                             options.deliveryMode = .highQualityFormat
