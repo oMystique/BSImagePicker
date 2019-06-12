@@ -230,11 +230,11 @@ final class PhotosViewController : UICollectionViewController {
                         }
                         else {
                             let options = PHImageRequestOptions()
-                            options.deliveryMode = PHImageRequestOptionsDeliveryMode.fastFormat
-                            options.isSynchronous = false
+                            options.deliveryMode = PHImageRequestOptionsDeliveryMode.highQualityFormat
+                            options.isSynchronous = true
                             options.isNetworkAccessAllowed = true
                             
-                            PHImageManager.default().requestImage(for: asset, targetSize: imageView.frame.size, contentMode: PHImageContentMode.aspectFill, options: options, resultHandler: {
+                            PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 199, height: 199), contentMode: PHImageContentMode.aspectFill, options: options, resultHandler: {
                                 (image, info) in
                                 imageView.image = result
                             })
