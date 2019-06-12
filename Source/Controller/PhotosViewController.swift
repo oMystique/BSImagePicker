@@ -218,11 +218,25 @@ final class PhotosViewController : UICollectionViewController {
                 // Setup fetch options to be synchronous
                 let options = PHImageRequestOptions()
                 options.isSynchronous = true
+                options.isNetworkAccessAllowed = true
                 
                 // Load image for preview
                 if let imageView = vc.imageView {
                     PHCachingImageManager.default().requestImage(for: asset, targetSize:imageView.frame.size, contentMode: .aspectFit, options: options) { (result, _) in
-                        imageView.image = result
+                        
+                        if (result != nil) {
+                            imageView.image = result
+                        }
+                        else {
+                            let options = PHImageRequestOptions()
+                            options.deliveryMode = PHImageRequestOptionsDeliveryMode.fastFormat
+                            options.isSynchronous = true
+                            
+                            PHImageManager.default().requestImage(for: asset, targetSize: imageView.frame.size, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: {
+                                (image, _) in
+                                imageView.image = result
+                            })
+                        }
                     }
                 }
                 
