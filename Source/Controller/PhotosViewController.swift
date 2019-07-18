@@ -598,6 +598,7 @@ extension PhotosViewController: PHPhotoLibraryChangeObserver {
                         for removedObject in removedObjects {
                             if let removedIndex = photosDataSource.selections.index(of: removedObject) {
                                 photosDataSource.selections.remove(at: removedIndex)
+                                self.deselectionClosure?(removedObject)
                             }
                         }
                     }
