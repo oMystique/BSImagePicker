@@ -593,17 +593,17 @@ extension PhotosViewController: PHPhotoLibraryChangeObserver {
                     // Update fetch result
                     photosDataSource.fetchResult = photosChanges.fetchResultAfterChanges as! PHFetchResult<PHAsset>
                     
-                    if let removed = photosChanges.removedIndexes {
-                        collectionView.performBatchUpdates({
-                            collectionView.deleteItems(at: removed.bs_indexPathsForSection(1))
-                        }, completion: nil)
-                    }
-                    
-                    if let inserted = photosChanges.insertedIndexes {
-                        collectionView.performBatchUpdates({
-                            collectionView.insertItems(at: inserted.bs_indexPathsForSection(1))
-                        }, completion: nil)
-                    }
+//                    if let removed = photosChanges.removedIndexes {
+//                        collectionView.performBatchUpdates({
+//                            collectionView.deleteItems(at: removed.bs_indexPathsForSection(1))
+//                        }, completion: nil)
+//                    }
+//
+//                    if let inserted = photosChanges.insertedIndexes {
+//                        collectionView.performBatchUpdates({
+//                            collectionView.insertItems(at: inserted.bs_indexPathsForSection(1))
+//                        }, completion: nil)
+//                    }
                     
                     // Changes is causing issues right now...fix me later
                     // Example of issue:
