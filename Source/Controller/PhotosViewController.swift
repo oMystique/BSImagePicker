@@ -591,8 +591,20 @@ extension PhotosViewController: PHPhotoLibraryChangeObserver {
                 // Alright...we get spammed with change notifications, even when there are none. So guard against it
                 if photosChanges.hasIncrementalChanges && (photosChanges.removedIndexes?.count > 0 || photosChanges.insertedIndexes?.count > 0 || photosChanges.changedIndexes?.count > 0) {
                     // Update fetch result
+                    
+                    
+                    if let removed = photosChanges.removedIndexes {
+                        let removedObjects = photosDataSource.fetchResult.objects(at: removed)
+                        for removedObject in removedObjects {
+                            if let removedIndex = photosDataSource.selections.index(of: removedObject) {
+                                photosDataSource.selections.remove(at: removedIndex)
+                            }
+                        }
+                    }
+                    
                     photosDataSource.fetchResult = photosChanges.fetchResultAfterChanges as! PHFetchResult<PHAsset>
                     
+//                    This maked a crash.
 //                    if let removed = photosChanges.removedIndexes {
 //                        collectionView.performBatchUpdates({
 //                            collectionView.deleteItems(at: removed.bs_indexPathsForSection(1))
