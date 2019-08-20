@@ -152,6 +152,14 @@ final class PhotosViewController : UICollectionViewController {
         super.viewWillAppear(animated)
         
         updateDoneButton()
+        
+        PHPhotoLibrary.shared().register(self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
     
     // MARK: Button actions
