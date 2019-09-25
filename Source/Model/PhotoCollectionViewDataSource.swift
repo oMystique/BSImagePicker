@@ -79,10 +79,12 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         // Request image
         let options = PHImageRequestOptions()
         options.isSynchronous = false
-        options.deliveryMode = .highQualityFormat
+        options.deliveryMode = .opportunistic
         
         cell.tag = Int(photosManager.requestImage(for: asset, targetSize: imageSize, contentMode: imageContentMode, options: options) { (result, _) in
-            cell.imageView.image = result
+            DispatchQueue.main.async {
+                cell.imageView.image = result
+            }
         })
         
         // Set selection number
