@@ -32,7 +32,7 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
     
     fileprivate let photoCellIdentifier = "photoCellIdentifier"
     fileprivate let photosManager = PHCachingImageManager.default()
-    fileprivate let imageContentMode: PHImageContentMode = .aspectFill
+    fileprivate let imageContentMode: PHImageContentMode = .aspectFit
     
     let settings: BSImagePickerSettings?
     @objc var imageSize: CGSize = CGSize.zero
@@ -78,10 +78,7 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         
         // Request image
         cell.tag = Int(photosManager.requestImage(for: asset, targetSize: imageSize, contentMode: imageContentMode, options: nil) { (result, _) in
-            guard let data = result?.jpegData(compressionQuality: 0.4) else {
-                return
-            }
-            cell.imageView.image = UIImage(data: data)
+            cell.imageView.image = result
         })
         
         // Set selection number
