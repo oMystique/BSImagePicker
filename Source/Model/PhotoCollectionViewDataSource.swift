@@ -80,6 +80,7 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         let options = PHImageRequestOptions()
         options.isSynchronous = false
         options.deliveryMode = .opportunistic
+        options.resizeMode = .exact
         
         weak var weakCell = cell
         
