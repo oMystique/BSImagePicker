@@ -80,7 +80,7 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         let options = PHImageRequestOptions()
         options.isSynchronous = false
         options.deliveryMode = .opportunistic
-        options.resizeMode = .exact
+        options.resizeMode = .fast
         
         weak var weakCell = cell
         
@@ -93,23 +93,7 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
                 return
             }
             
-            let scale = min(1.0, min(self.imageSize.width / max(1.0, result.size.width), self.imageSize.height / max(1.0, result.size.height)))
-            let scaledSize = CGSize(width: floor(result.size.width * scale), height: floor(result.size.height * scale))
-            
-            UIGraphicsBeginImageContextWithOptions(scaledSize, true, 1.0)
-            result.draw(in: CGRect(origin: CGPoint(), size: scaledSize))
-            let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            if (scaledImage == nil) {
-               return
-            }
-            
-            if #available(iOS 11.0, *) {
-                weakCell?.imageView.image = PhotoCollectionViewDataSource.compressImage(scaledImage!, quality: 0.5)
-            } else {
-                weakCell?.imageView.image = scaledImage
-            }
+            weakCell?.imageView.image = result
         }
         
         // Set selection number
