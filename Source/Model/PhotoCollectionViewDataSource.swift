@@ -78,7 +78,10 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         
         // Request image
         cell.tag = Int(photosManager.requestImage(for: asset, targetSize: imageSize, contentMode: imageContentMode, options: nil) { (result, _) in
-            cell.imageView.image = result
+            guard let data = result?.jpegData(compressionQuality: 0.4) else {
+                return
+            }
+            cell.imageView.image = UIImage(data: data)
         })
         
         // Set selection number
