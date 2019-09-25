@@ -81,11 +81,15 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         options.isSynchronous = false
         options.deliveryMode = .opportunistic
         
-        cell.tag = Int(photosManager.requestImage(for: asset, targetSize: imageSize, contentMode: imageContentMode, options: options) { (result, _) in
-            DispatchQueue.main.async {
-                cell.imageView.image = result
-            }
-        })
+//        cell.tag = Int(photosManager.requestImage(for: asset, targetSize: imageSize, contentMode: imageContentMode, options: options) { (result, _) in
+//            DispatchQueue.main.async {
+//                cell.imageView.image = result
+//            }
+//        })
+        
+        PHImageManager.default().requestImage(for: asset, targetSize: imageSize, contentMode: imageContentMode, options: options) { (result, _) in
+            cell.imageView.image = result
+        }
         
         // Set selection number
         if let index = selections.index(of: asset) {
