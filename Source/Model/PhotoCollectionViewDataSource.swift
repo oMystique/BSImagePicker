@@ -69,9 +69,9 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         }
         
         // Cancel any pending image requests
-//        if cell.tag != 0 {
-//            photosManager.cancelImageRequest(PHImageRequestID(cell.tag))
-//        }
+        if cell.tag != 0 {
+            photosManager.cancelImageRequest(PHImageRequestID(cell.tag))
+        }
         
         let asset = fetchResult[indexPath.row]
         cell.asset = asset
@@ -79,7 +79,7 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         // Request image
         let options = PHImageRequestOptions()
         options.isSynchronous = false
-        options.deliveryMode = .opportunistic
+        options.deliveryMode = .highQualityFormat
         
         cell.tag = Int(photosManager.requestImage(for: asset, targetSize: imageSize, contentMode: imageContentMode, options: options) { (result, _) in
             cell.imageView.image = result
