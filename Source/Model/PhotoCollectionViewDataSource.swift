@@ -88,10 +88,23 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
             guard let result = result else {
                 return
             }
+            
+            let scale = min(1.0, min(self.imageSize.width / max(1.0, result.size.width), self.imageSize.height / max(1.0, result.size.height)))
+            let scaledSize = CGSize(width: floor(result.size.width * scale), height: floor(result.size.height * scale))
+            
+            UIGraphicsBeginImageContextWithOptions(scaledSize, true, 1.0)
+            result.draw(in: CGRect(origin: CGPoint(), size: scaledSize))
+            let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            if (scaledImage == nil) {
+               return
+            }
+            
             if #available(iOS 11.0, *) {
-                weakCell?.imageView.image = PhotoCollectionViewDataSource.compressImage(result, quality: 0.5)
+                weakCell?.imageView.image = PhotoCollectionViewDataSource.compressImage(scaledImage!, quality: 0.5)
             } else {
-                weakCell?.imageView.image = result
+                weakCell?.imageView.image = scaledImage
             }
         }
         
