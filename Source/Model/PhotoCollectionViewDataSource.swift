@@ -84,7 +84,7 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         weak var weakCell = cell
         
         cell.tag = Int(photosManager.requestImage(for: asset, targetSize: imageSize, contentMode: imageContentMode, options: options) { (result, _) in
-            weakCell.imageView.image = result
+            weakCell?.imageView.image = result
         })
         
         // Set selection number
