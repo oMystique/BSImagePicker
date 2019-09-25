@@ -83,7 +83,7 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         
         weak var weakCell = cell
         
-        cell.tag = Int(photosManager.requestImage(for: asset, targetSize: imageSize, contentMode: imageContentMode, options: options) { (result, _) in
+        photosManager.requestImage(for: asset, targetSize: imageSize, contentMode: imageContentMode, options: options) { (result, _) in
             guard let result = result else {
                 return
             }
@@ -92,7 +92,7 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
             } else {
                 weakCell?.imageView.image = result
             }
-        })
+        }
         
         // Set selection number
         if let index = selections.index(of: asset) {
