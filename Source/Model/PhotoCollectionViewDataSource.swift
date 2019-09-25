@@ -84,7 +84,14 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         weak var weakCell = cell
         
         cell.tag = Int(photosManager.requestImage(for: asset, targetSize: imageSize, contentMode: imageContentMode, options: options) { (result, _) in
-            weakCell?.imageView.image = result
+            guard let result = result else {
+                return
+            }
+            if #available(iOS 11.0, *) {
+                weakCell?.imageView.image = PhotoCollectionViewDataSource.compressImage(result, quality: 0.5)
+            } else {
+                weakCell?.imageView.image = result
+            }
         })
         
         // Set selection number
@@ -103,6 +110,29 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         UIView.setAnimationsEnabled(true)
         
         return cell
+    }
+    
+    @available(iOSApplicationExtension 11.0, iOS 11.0, *)
+    public static func compressImage(_ image: UIImage, quality: Float) -> UIImage? {
+        let data = NSMutableData()
+        guard let destination = CGImageDestinationCreateWithData(data as CFMutableData, AVFileType.heic as CFString, 1, nil) else {
+            return nil
+        }
+        
+        let options = NSMutableDictionary()
+        options.setObject(quality as NSNumber, forKey: kCGImageDestinationLossyCompressionQuality as NSString)
+        
+        guard let cgImage = image.cgImage else {
+            return nil
+        }
+        CGImageDestinationAddImage(destination, cgImage, options as CFDictionary)
+        CGImageDestinationFinalize(destination)
+        
+        if data.length == 0 {
+            return nil
+        }
+        
+        return UIImage(data: data as Data)
     }
     
     @objc func registerCellIdentifiersForCollectionView(_ collectionView: UICollectionView?) {
