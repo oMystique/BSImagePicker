@@ -85,7 +85,7 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
         weak var weakCell = cell
         
         if (imageSize.width == 0 && imageSize.height == 0) {
-            imageSize = cell.imageView.frame.size
+            imageSize = CGSize(width: cell.imageView.frame.size.width * 3, height: cell.imageView.frame.size.height * 3)
         }
         
         photosManager.requestImage(for: asset, targetSize: imageSize, contentMode: imageContentMode, options: options) { (result, _) in
